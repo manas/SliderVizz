@@ -1,0 +1,175 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>SliderViz</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <script src="scripts/js/codemirror.js"></script>
+    <script src="scripts/js/plsql.js"></script>
+    <script src="scripts/js/jquery-1.7.2.js"></script>
+    <script src="scripts/js/events.js"></script>
+    <script src="scripts/js/ajax.js"></script>
+    <script src="scripts/js/jquery-ui-1.8.20.custom.min.js"></script>
+    <script src="scripts/js/d3.v2.min.js"></script>
+    <script src="scripts/js/histogram-chart.js"></script>
+    <!-- Le styles -->
+    <link rel="stylesheet" href="scripts/css/bootstrap/bootstrap.css" >
+    <link rel="stylesheet" href="scripts/css/codemirror.css">
+    <link rel="stylesheet" href="scripts/css/ui-lightness/jquery-ui-1.8.20.custom.css">
+    
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+    </style>
+    <style>.CodeMirror {border: 2px inset #dee;}</style>
+    <style>
+		
+		.bars rect {
+		  fill: #2E2E2E;
+		}
+		
+		.axis text {
+		  font: 10px sans-serif;
+		}
+		
+		.axis path, .axis line {
+		  fill: none;
+		  stroke: #000;
+		  shape-rendering: crispEdges;
+		}
+
+	</style>
+    <link href="scripts/css/bootstrap/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="img/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="img/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="img/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="img/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="img/apple-touch-icon-57-precomposed.png">
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="#">SliderViz</a>
+
+          </div><!--/.nav-collapse -->
+        </div>
+      </div> <!-- navbar end -->
+   
+
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span6">
+	        <form method="post" action="Scroll">
+				<textarea id="code" name="code">
+SELECT iddept,avg(salary),count(idemployee) 
+FROM employee where iddept=2 AND age>35;
+
+				</textarea>
+ 				<input id="submit" type="button" onclick="keyHandler()" value="Ok">
+
+			</form>
+
+	    	<script>
+		        editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+		        lineNumbers: true,
+		        matchBrackets: true,
+		        indentUnit: 4,
+		        mode: "text/x-plsql",
+	       		// onKeyEvent: keyEventHandler
+	      		});
+	     
+	     
+	    	</script>
+		</div> <!-- Left editor div end -->
+          
+           
+       
+        <div class="span6">
+        	<div>
+	        	<p>
+	        		
+	        	</p>
+        	</div>
+        	<div id="histog">
+				        	
+				<script>
+				
+					d3.select("#histog")
+					    .datum(irwinHallDistribution(50, 2))
+					  .call(histogramChart()
+					    .bins(d3.scale.linear().ticks(20))
+					    .tickFormat(d3.format(".02f")));
+					
+					function irwinHallDistribution(n, m) {
+					  var distribution = [];
+					  for (var i = 0; i < n; i++) {
+					    for (var s = 0, j = 0; j < m; j++) {
+					      s += Math.random();
+					    }
+					    distribution.push(s / m);
+					  }
+					 
+					  return distribution;
+					}
+				
+				</script>
+        	
+        	</div> <!-- Histogram end div -->
+	        <div id="slider_div">
+				
+	
+				<div class="demo">
+				
+					<p>
+						<!-- <label for="amount">Value:</label> -->
+						<input type="text" id="amount" style="border:0; color:#f6931f; font-weight:bold;" />
+					</p>
+				
+					<div id="slider"></div>
+				</div>
+			</div>      <!--/row-->
+        </div><!--/span right one-->
+  	
+      </div><!--/row-->
+<div id="result">
+
+</div>
+      <hr>
+
+      <footer>
+        <p>&copy; Department of Computer Science at The Ohio State University 2012</p>
+      </footer>
+
+    </div><!--/.fluid-container-->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+   
+    
+
+
+    
+    
+
+  </body>
+</html>
+
